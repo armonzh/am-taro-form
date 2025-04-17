@@ -1,30 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "noImplicitAny": false,
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "jsx": "react-jsx",       // React 17+ 新 JSX 转换
+    "esModuleInterop": true,   // 允许 ES 模块的默认导入
     "allowSyntheticDefaultImports": true,
-    "outDir": "lib",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strictNullChecks": true,
-    "sourceMap": true,
-    "rootDir": ".",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
     "paths": {
       // TS5090 leading './'
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "am-taro-form": ["./src/packages"]
     }
   },
   "include": ["./src", "./types", "./config"],
-  "compileOnSave": false
+  "compileOnSave": false,
 }
