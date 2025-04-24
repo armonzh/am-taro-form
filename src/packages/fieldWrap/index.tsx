@@ -4,7 +4,7 @@
 import React, { useCallback } from 'react';
 
 const FieldWrap = (props: any) => {
-  const { children, _name, trigger = 'onChange', ...restProps } = props;
+  const { children, _name, trigger = 'onChange', extraProps = {}, ...restProps } = props;
 
   const onChangeParent = props[trigger];
   const onChangeChild = children?.props?.[trigger];
@@ -20,6 +20,7 @@ const FieldWrap = (props: any) => {
 
   if (React.isValidElement(children)) {
     return React.cloneElement(children, {
+      ...extraProps,
       ...restProps,
       ...(children.props || {}),
       [trigger]: onChange,
