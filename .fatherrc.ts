@@ -8,9 +8,21 @@ export default defineConfig({
     input: 'src/packages',
   },
   prebundle: {
-    deps: {}
+    deps: {},
   },
   extraBabelPresets: [
-    ['@babel/preset-react', { runtime: 'automatic' }] // React 17+ 新 JSX 转换
+    ['@babel/preset-react', { runtime: 'automatic' }], // React 17+ 新 JSX 转换
+  ],
+  extraBabelPlugins: [
+    [
+      'import',
+      {
+        libraryName: '@nutui/nutui-react-taro',
+        libraryDirectory: 'dist/esm',
+        style: 'css',
+        camel2DashComponentName: false,
+      },
+      'nutui-react-taro',
+    ],
   ],
 });
