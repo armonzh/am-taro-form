@@ -1,6 +1,6 @@
 {
   "name": "am-taro-form",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "description": "基于taro的跨平台Form表单库",
   "templateInfo": {
     "name": "default",
