@@ -94,7 +94,8 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,tsx,less,md,json}": [
+    "*.{js,jsx,tsx,less}": [
+      "eslint --fix",
       "prettier --write"
     ],
     "*.ts?(x)": [

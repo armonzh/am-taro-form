@@ -1,15 +1,20 @@
-import {Text } from '@tarojs/components';
+import { Text } from '@tarojs/components';
 import { useCallback, useState } from 'react';
 import { DatePicker, DatePickerProps } from '@nutui/nutui-react-taro';
-import ListItemStyle, { propsKeyList as ListItemStylePropsKeyList } from '../listItemStyle';
+import ListItemStyle, {
+  propsKeyList as ListItemStylePropsKeyList,
+} from '../listItemStyle';
 import { useMode, pick } from '../utils';
 
-import type { ArrayValueType, ArrayMergeType } from '../utils';
+import type { ArrayValueType } from '../utils';
 import type { ListItemStyleProps } from '../listItemStyle';
 
 interface BaseDatePickerProps extends ListItemStyleProps {
   /** DatePicker 组件透传属性 */
-  fieldProps?: Omit<DatePickerProps, 'value' | 'onChange' | 'onConfirm' | 'onClose' | 'onCancel' | 'visible'>;
+  fieldProps?: Omit<
+    DatePickerProps,
+    'value' | 'onChange' | 'onConfirm' | 'onClose' | 'onCancel' | 'visible'
+  >;
   /** 日期选择时的回调 */
   onChange?: (v: string) => void;
   /** 选中日期 */
@@ -18,13 +23,19 @@ interface BaseDatePickerProps extends ListItemStyleProps {
   placeholder?: string;
 }
 
-export type FieldDatePickerProps = BaseDatePickerProps & Partial<Pick<DatePickerProps, ArrayValueType<typeof transferPropsKeyList>>>;
+export type FieldDatePickerProps = BaseDatePickerProps &
+  Partial<Pick<DatePickerProps, ArrayValueType<typeof transferPropsKeyList>>>;
 
 /** DatePicker 通过组件透传属性列表，其他属性可通过fieldProps属性进行透传 */
-const transferPropsKeyList: ('startDate' | 'endDate' | 'type' | 'title')[] = ['startDate', 'endDate', 'type', 'title'];
+const transferPropsKeyList: ('startDate' | 'endDate' | 'type' | 'title')[] = [
+  'startDate',
+  'endDate',
+  'type',
+  'title',
+];
 
 /** 组件属性列表 */
-export const propsKeyList: (ArrayMergeType<keyof FieldDatePickerProps, typeof transferPropsKeyList> | keyof FieldDatePickerProps)[] = [
+export const propsKeyList: (keyof FieldDatePickerProps)[] = [
   /** ListItemStyle组件属性 */
   ...ListItemStylePropsKeyList,
   /** 透传属性 */
@@ -35,7 +46,13 @@ export const propsKeyList: (ArrayMergeType<keyof FieldDatePickerProps, typeof tr
 ];
 
 const FieldDatePicker: React.FC<FieldDatePickerProps> = (props) => {
-  const { placeholder = `请选择${props.label || ''}`, fieldProps = {}, value, onChange, type = 'date' } = props;
+  const {
+    placeholder = `请选择${props.label || ''}`,
+    fieldProps = {},
+    value,
+    onChange,
+    type = 'date',
+  } = props;
   const isEdit = useMode('edit');
   const [visible, setVisible] = useState(false);
 
@@ -46,7 +63,7 @@ const FieldDatePicker: React.FC<FieldDatePickerProps> = (props) => {
     if (type === 'date') {
       return val.slice(0, 3).join('-');
     }
-     if (type === 'time') {
+    if (type === 'time') {
       return val.slice(0, 3).join(':');
     }
     if (type === 'year-month' || type === 'month-day') {
@@ -69,17 +86,21 @@ const FieldDatePicker: React.FC<FieldDatePickerProps> = (props) => {
     if (type === 'date' || type === 'datetime') {
       return new Date(value);
     }
-     if (type === 'time') {
-      return new Date(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${value}`);
+    if (type === 'time') {
+      return new Date(
+        `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${value}`,
+      );
     }
     if (type === 'year-month') {
       return new Date(`${value}-${date.getDate()}`);
     }
     if (type === 'month-day') {
-      return new Date(`${date.getFullYear()}-${value}`);;
+      return new Date(`${date.getFullYear()}-${value}`);
     }
     if (type === 'hour-minutes') {
-      return new Date(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${value}:${date.getSeconds()}`);
+      return new Date(
+        `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${value}:${date.getSeconds()}`,
+      );
     }
     if (type === 'datehour') {
       return new Date(`${value}:${date.getMinutes()}:${date.getSeconds()}`);
@@ -89,23 +110,34 @@ const FieldDatePicker: React.FC<FieldDatePickerProps> = (props) => {
 
   return (
     <>
-      <ListItemStyle {...pick(props, ListItemStylePropsKeyList)} onClick={isEdit ? open : undefined}>
-        <Text className="fx" style={{ textAlign: 'right', color: value ? undefined : 'rgba(15, 26, 40, 0.45)' }}>
+      <ListItemStyle
+        {...pick(props, ListItemStylePropsKeyList)}
+        onClick={isEdit ? open : undefined}
+      >
+        <Text
+          className="fx"
+          style={{
+            textAlign: 'right',
+            color: value ? undefined : 'rgba(15, 26, 40, 0.45)',
+          }}
+        >
           {value || placeholder}
         </Text>
       </ListItemStyle>
-      {visible ? <DatePicker
-        title={placeholder}
-        defaultValue={new Date()}
-        {...pick(props, transferPropsKeyList)}
-        {...fieldProps}
-        visible
-        value={getDateValue()}
-        onClose={() => setVisible(false)}
-        onConfirm={(_, vals) => {
-          onChange?.(getDateStr(vals));
-        }}
-      /> : null}
+      {visible ? (
+        <DatePicker
+          title={placeholder}
+          defaultValue={new Date()}
+          {...pick(props, transferPropsKeyList)}
+          {...fieldProps}
+          visible
+          value={getDateValue()}
+          onClose={() => setVisible(false)}
+          onConfirm={(_, vals) => {
+            onChange?.(getDateStr(vals));
+          }}
+        />
+      ) : null}
     </>
   );
 };

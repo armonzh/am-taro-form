@@ -1,6 +1,6 @@
-import { Cascader, CascaderProps } from "@nutui/nutui-react-taro";
-import { useMemo, useRef, useCallback, useImperativeHandle } from "react";
-import { pick } from "../utils";
+import { Cascader, CascaderProps } from '@nutui/nutui-react-taro';
+import { useMemo, useRef, useCallback, useImperativeHandle } from 'react';
+import { pick } from '../utils';
 
 export interface CascaderOption extends Record<string, any> {
   /** 选项提示文本 */
@@ -22,7 +22,9 @@ export interface CascaderOption extends Record<string, any> {
 }
 
 export interface BaseCascaderPickerProps
-  extends Partial<Omit<CascaderProps, "options" | 'value' | 'onChange' | 'defaultValue'>> {
+  extends Partial<
+    Omit<CascaderProps, 'options' | 'value' | 'onChange' | 'defaultValue'>
+  > {
   options: CascaderOption[];
 }
 
@@ -44,39 +46,47 @@ export interface ExtraProps<T> {
 
 export type CascaderPickerProps = BaseCascaderPickerProps &
   (
-    | {
+    | ({
         labelInValue?: false;
         valueToList?: true;
-      } & ExtraProps<ValueType[]>
-    | {
+      } & ExtraProps<ValueType[]>)
+    | ({
         labelInValue: true;
         valueToList?: true;
-      } & ExtraProps<ValueTypeObj[]>
-    | {
+      } & ExtraProps<ValueTypeObj[]>)
+    | ({
         labelInValue?: false;
         valueToList: false;
-      } & ExtraProps<ValueType>
-    | {
+      } & ExtraProps<ValueType>)
+    | ({
         labelInValue: true;
         valueToList: false;
-      } & ExtraProps<ValueTypeObj>
+      } & ExtraProps<ValueTypeObj>)
   );
 
 const CascaderPicker: React.FC<CascaderPickerProps> = (props) => {
-  const { options, value, onChange, labelInValue, valueToList, actionRef, ...restProps } = props;
+  const {
+    options,
+    value,
+    onChange,
+    labelInValue,
+    valueToList,
+    actionRef,
+    ...restProps
+  } = props;
   const cacheRef = useRef<any>({});
 
   const {
-    valueKey = "value",
-    textKey = "text",
-    childrenKey = "children",
+    valueKey = 'value',
+    textKey = 'text',
+    childrenKey = 'children',
   } = props.optionKey || {};
 
   const flatOptions = useMemo(() => {
     const flatList = (
       list: CascaderOption[],
       init: any[] = [],
-      parentKey: string | number = ""
+      parentKey: string | number = '',
     ): any[] => {
       return list.reduce((pre: any[], curr) => {
         const arr = [...pre];
@@ -113,14 +123,16 @@ const CascaderPicker: React.FC<CascaderPickerProps> = (props) => {
     if (!V && V !== 0) return [];
 
     /** labelInValue: true  valueToList: true */
-    if (LIV && VTL) return V;
+    if (LIV && VTL) return Array.isArray(V) ? V : [];
 
     /** labelInValue: false  valueToList: true */
     if (!LIV && VTL && Array.isArray(V)) {
-      return V.map((v: ValueType) => list.find((item: any) => item.value === v));
-    };
+      return V.map((v: ValueType) =>
+        list.find((item: any) => item.value === v),
+      );
+    }
 
-     /** valueToList: false */
+    /** valueToList: false */
     if (!VTL) {
       const val = LIV ? V?.value : V;
       const getOpts = (v: ValueType, init: any[] = []): any[] => {
@@ -137,30 +149,36 @@ const CascaderPicker: React.FC<CascaderPickerProps> = (props) => {
 
   const handleChange = (vals: ValueType[], list: any[]) => {
     if (!labelInValue) {
-      onChange?.(valueToList ? vals : vals.pop() as any);
+      onChange?.(valueToList ? vals : (vals.pop() as any));
       return;
     }
-    const opts = list.map(item => {
+    const opts = list.map((item) => {
       return {
         value: item?.[valueKey],
         label: item?.[textKey],
       };
     });
-    onChange?.(valueToList ? opts : opts.pop() as any);
+    onChange?.(valueToList ? opts : (opts.pop() as any));
   };
 
   const selectOptions = getSelectOptions();
 
-  useImperativeHandle(actionRef as any, () => {
-    return { getSelectOptions };
-  }, [getSelectOptions]);
+  useImperativeHandle(
+    actionRef as any,
+    () => {
+      return { getSelectOptions };
+    },
+    [getSelectOptions],
+  );
 
-  return <Cascader
-    {...restProps}
-    defaultValue={selectOptions.map((item) => item.value)}
-    onChange={handleChange}
-    options={options}
-  />;
+  return (
+    <Cascader
+      {...restProps}
+      defaultValue={selectOptions.map((item) => item?.value)}
+      onChange={handleChange}
+      options={options}
+    />
+  );
 };
 
 export default CascaderPicker;

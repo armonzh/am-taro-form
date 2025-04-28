@@ -10,7 +10,11 @@ export {
 export type { ListItemStyleProps } from './listItemStyle';
 
 export { default as SelectPicker } from './selectPicker';
-export type { SelectPickerProps } from './selectPicker';
+export type {
+  SelectPickerProps,
+  BaseSelectPickerProps,
+  OptionType as SelectOptionType,
+} from './selectPicker';
 
 export { default as CascaderPicker } from './cascaderPicker';
 export type { CascaderPickerProps } from './cascaderPicker';

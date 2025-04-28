@@ -1,8 +1,10 @@
 import { Input, Text, InputProps, BaseEventOrig } from '@tarojs/components';
-import ListItemStyle, { propsKeyList as ListItemStylePropsKeyList } from '../listItemStyle';
+import ListItemStyle, {
+  propsKeyList as ListItemStylePropsKeyList,
+} from '../listItemStyle';
 import { useMode, pick } from '../utils';
 
-import type { ArrayValueType, ArrayMergeType } from '../utils';
+import type { ArrayValueType } from '../utils';
 import type { ListItemStyleProps } from '../listItemStyle';
 
 interface BaseInputProps extends ListItemStyleProps {
@@ -11,13 +13,20 @@ interface BaseInputProps extends ListItemStyleProps {
   value?: string;
 }
 
-export type FieldInputProps = BaseInputProps & Pick<InputProps, ArrayValueType<typeof transferPropsKeyList>>;
+export type FieldInputProps = BaseInputProps &
+  Pick<InputProps, ArrayValueType<typeof transferPropsKeyList>>;
 
 /** Input 通过组件透传属性列表，其他属性可通过fieldProps属性进行透传 */
-const transferPropsKeyList: ('disabled' | 'value' | 'placeholder' | 'onBlur' | 'onFocus')[] = ['disabled', 'value', 'placeholder', 'onBlur', 'onFocus'];
+const transferPropsKeyList: (
+  | 'disabled'
+  | 'value'
+  | 'placeholder'
+  | 'onBlur'
+  | 'onFocus'
+)[] = ['disabled', 'value', 'placeholder', 'onBlur', 'onFocus'];
 
 /** 组件属性列表 */
-export const propsKeyList: (ArrayMergeType<keyof FieldInputProps, typeof transferPropsKeyList> | keyof FieldInputProps)[] = [
+export const propsKeyList: (keyof FieldInputProps)[] = [
   /** ListItemStyle组件属性 */
   ...ListItemStylePropsKeyList,
   /** 透传属性 */
@@ -29,7 +38,11 @@ export const propsKeyList: (ArrayMergeType<keyof FieldInputProps, typeof transfe
 
 const FieldInput: React.FC<FieldInputProps> = (props) => {
   const isEdit = useMode('edit');
-  const inputProps: InputProps = Object.assign({}, pick(props, transferPropsKeyList), props.fieldProps);
+  const inputProps: InputProps = Object.assign(
+    {},
+    pick(props, transferPropsKeyList),
+    props.fieldProps,
+  );
 
   const handleChange = (e: BaseEventOrig<InputProps.inputEventDetail>) => {
     props.onChange?.(e.detail.value);

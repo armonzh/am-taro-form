@@ -2,7 +2,12 @@ import React, { useState, useContext, useMemo } from 'react';
 import { Field } from 'rc-field-form';
 
 import type { FieldProps } from 'rc-field-form/es/Field';
-import type { FieldInputProps, FieldSelectProps, FieldDatePickerProps, FieldCascaderPickerProps } from '../field';
+import type {
+  FieldInputProps,
+  FieldSelectProps,
+  FieldDatePickerProps,
+  FieldCascaderPickerProps,
+} from '../field';
 import type { ModeType } from '../utils';
 
 import FieldWrap from '../fieldWrap';
@@ -16,13 +21,12 @@ import {
   FieldCascaderPicker,
   cascaderPickerKeyList,
 } from '../field';
-import { ListItemStyleProps, propsKeyList as ListItemStylePropsKeyList } from '../listItemStyle';
-
 import {
-  genEmptyMeta,
-  FormContext,
-  pick,
-} from '../utils';
+  ListItemStyleProps,
+  propsKeyList as ListItemStylePropsKeyList,
+} from '../listItemStyle';
+
+import { genEmptyMeta, FormContext, pick } from '../utils';
 
 export interface BaseFormItemProps<T> extends FieldProps<T> {
   /** 表单模式，edit：编辑模式，readOnly：只读模式 */
@@ -45,7 +49,7 @@ export interface DatePickerFormItemProps extends FieldDatePickerProps {
 export type SelectFormItemProps = FieldSelectProps & {
   /** 表单类型，select 表单为选择框 */
   valueType: 'select';
-}
+};
 
 /** cascaderPicker 组件独有属性 */
 export interface CascaderPickerFormItemProps extends FieldCascaderPickerProps {
@@ -72,7 +76,9 @@ function FormItem<T extends any>(props: FormItemProps<T>) {
   }, [config, mode]);
 
   /** 是否展示必填校验样式, requiredStyle: 统一设置是否展示必填样式 */
-  const isRequired = !configValue.requiredStyle ? false : (props.rules || []).some((rule: any) => rule?.required);
+  const isRequired = !configValue.requiredStyle
+    ? false
+    : (props.rules || []).some((rule: any) => rule?.required);
 
   /** listItemStyle 组件配置项 */
   const extraProps = {
@@ -100,17 +106,31 @@ function FormItem<T extends any>(props: FormItemProps<T>) {
     TextInputNode = children;
   } else if (valueType === 'date') {
     /** DatePicker 组件 */
-    TextInputNode = <FieldDatePicker {...extraProps} {...pick(props, datePickerKeyList)} />;
+    TextInputNode = (
+      <FieldDatePicker {...extraProps} {...pick(props, datePickerKeyList)} />
+    );
     /** 日期选择 */
   } else if (valueType === 'select') {
     /** Select 组件 */
-    TextInputNode = <FieldSelect {...extraProps} {...pick(props, selectPropsKeyList) as any} />;
+    TextInputNode = (
+      <FieldSelect
+        {...extraProps}
+        {...(pick(props, selectPropsKeyList) as any)}
+      />
+    );
   } else if (valueType === 'cascader') {
     /** cascaderPicker 组件 */
-    TextInputNode = <FieldCascaderPicker {...extraProps} {...pick(props, cascaderPickerKeyList) as any} />;
+    TextInputNode = (
+      <FieldCascaderPicker
+        {...extraProps}
+        {...(pick(props, cascaderPickerKeyList) as any)}
+      />
+    );
   } else {
     /** 默认使用Input输入框 */
-    TextInputNode = <FieldInput {...extraProps} {...pick(props, inputPropsKeyList)} />;
+    TextInputNode = (
+      <FieldInput {...extraProps} {...pick(props, inputPropsKeyList)} />
+    );
   }
 
   if (typeof TextInputNode !== 'function') {
@@ -130,26 +150,37 @@ function FormItem<T extends any>(props: FormItemProps<T>) {
       <Field {...formFieldProps}>{TextInputNode}</Field>
     </FormContext.Provider>
   );
-};
+}
 
 export default FormItem;
 
 /** FormItem构造函数配置类型 */
 type FieldConfigType<T> = Record<string, [T, string[]]>;
 /** 根据FormItem构造函数配置获取Field组件的props */
-type GetFieldConfigProps<T> = T extends FieldConfigType<infer P> ? GetReactProps<P> : ListItemStyleProps;
+type GetFieldConfigProps<T> =
+  T extends FieldConfigType<infer P> ? GetReactProps<P> : ListItemStyleProps;
 /** 获取React函数组件的props */
 type GetReactProps<T> = T extends React.FC<infer P> ? P : never;
 
-export const createFormItem = <V extends any = any, T extends React.FC  = any, F extends  FieldConfigType<T> = any>(fieldConfig: F): React.FC<FormItemProps<V> | GetFieldConfigProps<F> & BaseFormItemProps<V>> => {
+export const createFormItem = <
+  V extends any = any,
+  T extends React.FC = any,
+  F extends FieldConfigType<T> = any,
+>(
+  fieldConfig: F,
+): React.FC<
+  FormItemProps<V> | (GetFieldConfigProps<F> & BaseFormItemProps<V>)
+> => {
   return (props: any) => {
     if (props.valueType in fieldConfig) {
-      const [Comp, propsKeyList = ListItemStylePropsKeyList] = fieldConfig[props.valueType];
-      return <FormItem {...props}>
-        {React.createElement(Comp, pick(props, propsKeyList))}
-      </FormItem>
+      const [Comp, propsKeyList = ListItemStylePropsKeyList] =
+        fieldConfig[props.valueType];
+      return (
+        <FormItem {...props}>
+          {React.createElement(Comp, pick(props, propsKeyList))}
+        </FormItem>
+      );
     }
     return <FormItem {...props} />;
   };
 };
-
