@@ -1,3 +1,4 @@
+import React from 'react';
 import { Cell } from '@nutui/nutui-react-taro';
 import { View } from '@tarojs/components';
 import { ArrowRight } from '@nutui/icons-react-taro';
@@ -37,9 +38,22 @@ export interface ListItemStyleProps {
 }
 
 /** 组件属性列表 */
-export const propsKeyList: (keyof ListItemStyleProps)[]  = ['label', 'required', 'onClick', 'clickable', 'showArrowRight', 'help', 'errorText', 'className', 'divider', 'suffix'];
+export const propsKeyList: (keyof ListItemStyleProps)[] = [
+  'label',
+  'required',
+  'onClick',
+  'clickable',
+  'showArrowRight',
+  'help',
+  'errorText',
+  'className',
+  'divider',
+  'suffix',
+];
 
-const ListItemStyle: React.FC<React.PropsWithChildren<ListItemStyleProps>> = (props) => {
+const ListItemStyle: React.FC<React.PropsWithChildren<ListItemStyleProps>> = (
+  props,
+) => {
   const {
     label,
     required = false,
@@ -62,7 +76,7 @@ const ListItemStyle: React.FC<React.PropsWithChildren<ListItemStyleProps>> = (pr
   if (hasClick) cellProps.onClick = onClick;
 
   return (
-    <View className="list-item-style" >
+    <View className="list-item-style">
       <Cell
         {...cellProps}
         title={<LabelStyle text={label} required={required} />}
@@ -71,14 +85,19 @@ const ListItemStyle: React.FC<React.PropsWithChildren<ListItemStyleProps>> = (pr
         extra={
           <View className="list-item-style-content">
             {children}
-            {suffix || suffix === 0 ? <View className="list-item-style-suffix">{suffix}</View> : null}
+            {suffix || suffix === 0 ? (
+              <View className="list-item-style-suffix">{suffix}</View>
+            ) : null}
             {isShowArrow ? <ArrowRight color="#2020204C" size={16} /> : null}
           </View>
         }
         clickable={'clickable' in props ? clickable : hasClick}
       />
       {divider ? (
-        <DividerStyle text={isEmpty(errorText) ? help : errorText} type={isEmpty(errorText) ? 'help' : 'error'} />
+        <DividerStyle
+          text={isEmpty(errorText) ? help : errorText}
+          type={isEmpty(errorText) ? 'help' : 'error'}
+        />
       ) : null}
     </View>
   );
