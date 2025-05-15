@@ -1,0 +1,35 @@
+.list-item-style {
+  .nut-cell {
+    margin-bottom: 0;
+    box-shadow: initial;
+  }
+}
+.list-item-style-suffix {
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.list-item-style-label {
+  position: relative;
+}
+.list-item-style-label-required {
+  margin-right: var(--nutui-form-item-required-margin-right, 4px);
+  position: absolute;
+  left: -.8em;
+  color: red;
+}
+.list-item-style .nut-cell-left {
+  flex: inherit;
+  max-width: 50%;
+  min-width: 30%;
+}
+
+.list-item-style-content {
+  padding-left: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.list-item-style-divider {
+  padding-left: 16px;
+}
