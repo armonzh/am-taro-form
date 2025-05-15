@@ -17,9 +17,7 @@ export default function Index() {
             valueType="input"
             rules={[{ required: true, message: '请填写姓名' }]}
           />
-          <Form.Item label="身高" name="name1" valueType="input" suffix="cm" />
-          <Form.Item label="姓名" name="name2" valueType="input" />
-          <FormItem label="身高" name="name1" valueType="input" suffix="cm" />
+          <FormItem label="身高" name="height" valueType="input" suffix="cm" />
           <FormItem
             label="性别"
             name="gender"
