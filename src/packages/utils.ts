@@ -1,13 +1,39 @@
 import { createContext, useContext } from 'react';
 
-import type { MetaEvent } from 'rc-field-form/es/Field';
+import type { MetaEvent, FieldProps } from 'rc-field-form/es/Field';
 
 export type ModeType = 'edit' | 'readOnly';
 
 export type ArrayValueType<T> = T extends (infer U)[] ? U : never;
 export type ArrayMergeType<T, A> = ArrayValueType<T> | ArrayValueType<A>;
-export type CommonPropsKey = 'disabled' | 'value' | 'onChange' | 'placeholder' | 'mode';
+export type CommonPropsKey =
+  | 'disabled'
+  | 'value'
+  | 'onChange'
+  | 'placeholder'
+  | 'mode';
 
+/** Form.Item props配置列表 */
+export const FIELD_FORM_PROPS_KEYS: (keyof FieldProps)[] = [
+  'dependencies',
+  'getValueFromEvent',
+  'name',
+  'normalize',
+  'rules',
+  'shouldUpdate',
+  'trigger',
+  'validateTrigger',
+  'validateDebounce',
+  'validateFirst',
+  'valuePropName',
+  'getValueProps',
+  'messageVariables',
+  'initialValue',
+  'onReset',
+  'preserve',
+  'isListField',
+  'isList',
+];
 
 /**
  * Form组件配置项
@@ -15,7 +41,11 @@ export type CommonPropsKey = 'disabled' | 'value' | 'onChange' | 'placeholder' |
  * @param {boolean} errorStyle 是否显示底部错误文案，false 不展示
  * @param {boolean} requiredStyle 必填项是否展示前面必填标识（*）false 不展示
  */
-export const FormContext = createContext({ mode: 'edit', errorStyle: true, requiredStyle: true });
+export const FormContext = createContext({
+  mode: 'edit',
+  errorStyle: true,
+  requiredStyle: true,
+});
 
 /**
  * 获取表单模式
@@ -39,10 +69,13 @@ export const genEmptyMeta = (): MetaEvent => {
   };
 };
 
-export const pick = <T extends object, K extends keyof T>(obj: T, keys: K[] = []): Pick<T, K> => {
+export const pick = <T extends object, K extends keyof T>(
+  obj: T,
+  keys: K[] = [],
+): Pick<T, K> => {
   const newObj: any = {};
   if (Object.prototype.toString.call(obj) === '[object Object]') {
-    keys?.forEach?.(key => {
+    keys?.forEach?.((key) => {
       if (obj[key] !== undefined) {
         newObj[key] = obj[key];
       }

@@ -26,7 +26,12 @@ import {
   propsKeyList as ListItemStylePropsKeyList,
 } from '../listItemStyle';
 
-import { genEmptyMeta, FormContext, pick } from '../utils';
+import {
+  genEmptyMeta,
+  FormContext,
+  pick,
+  FIELD_FORM_PROPS_KEYS,
+} from '../utils';
 
 export interface BaseFormItemProps<T> extends FieldProps<T> {
   /** 表单模式，edit：编辑模式，readOnly：只读模式 */
@@ -66,7 +71,7 @@ type FormItemProps<Values> = BaseFormItemProps<Values> &
   );
 
 function FormItem<T extends any>(props: FormItemProps<T>) {
-  const { children, valueType, mode, ...restProps } = props;
+  const { children, valueType, mode } = props;
   let TextInputNode;
   const [meta, setMeta] = useState(genEmptyMeta());
   const config = useContext(FormContext);
@@ -97,7 +102,7 @@ function FormItem<T extends any>(props: FormItemProps<T>) {
   /** Field 组件属性 */
   const formFieldProps = {
     validateTrigger: 'onChange',
-    ...restProps,
+    ...pick(props, FIELD_FORM_PROPS_KEYS),
     onMetaChange,
     noStyle: true,
   };
