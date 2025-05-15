@@ -247,10 +247,10 @@ export default function Index() {
 
 **属性名**  | **属性说明** | **类型**                                                                                     | **默认值** |
 | --------- | --------------- | --------------------------------------------------------------------------------------------- | ----------- |
-| startDate | 选择器开始时间         | Date                                                                                          | 十年前         |
-| endDate   | 选择器结束时间         | Date                                                                                          | 十年后         |
-| type      | 日期类型            | 'date' | 'time' | 'year-month' | 'month-day' | 'datehour' | 'datetime' | 'hour-minutes' | date        |
-| title     | 选择器标题
+| startDate | 选择器开始时间         | `Date`                                                                                          | 十年前         |
+| endDate   | 选择器结束时间         | `Date`                                                                                          | 十年后         |
+| type      | 日期类型            | `'date' \| 'time' \| 'year-month' \| 'month-day' \| 'datehour' \| 'datetime' \| 'hour-minutes'` | date        |
+| title     | 选择器标题          | string        | -
 
 
 ### FormItem - select
